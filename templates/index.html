@@ -1,18 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Pictionary - Drawing Recognition Game</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+
 <body>
     <div class="container">
-        <header>
-            <h1>🎨 AI Pictionary</h1>
-            <p>Draw something and let AI guess what it is!</p>
-        </header>
-
         <main>
             <div class="game-area">
                 <div class="drawing-section">
@@ -20,7 +17,7 @@
                         <h3>Draw: <span id="current-word">Click "New Word"</span></h3>
                         <button id="new-word-btn" class="btn">🎲 New Word</button>
                     </div>
-                    
+
                     <div class="canvas-container">
                         <canvas id="drawing-canvas" width="400" height="400"></canvas>
                         <div class="canvas-controls">
@@ -31,7 +28,7 @@
                 </div>
 
                 <div class="results-section">
-                    <h3>🎯 AI Predictions:</h3>
+                    <h3>AI Predictions:</h3>
                     <div id="predictions" class="predictions">
                         <p>Draw something and I'll show you what I see! 👀</p>
                     </div>
@@ -39,7 +36,7 @@
             </div>
 
             <div class="instructions">
-                <h3>📋 How to play?</h3>
+                <h3>How to play?</h3>
                 <ol>
                     <li>Click "New Word" to get a challenge</li>
                     <li>Draw the given word on the canvas</li>
@@ -48,12 +45,9 @@
                 </ol>
             </div>
         </main>
-
-        <footer>
-            <p>Built with ❤️ for AI learning</p>
-        </footer>
     </div>
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
+
 </html>
