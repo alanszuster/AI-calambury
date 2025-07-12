@@ -16,14 +16,24 @@ app = Flask(__name__)
 
 # Configure CORS for specific domains
 allowed_origins = [
+    # Production URLs dla alanszuster.page
     "https://alanszuster.vercel.app",
-    "https://alanszuster-page.vercel.app",
+    "https://alanszusterpage-alanszuster-alanszusters-projects.vercel.app",
+    "https://alanszusterpage-alanszusters-projects.vercel.app",
+    "https://alanszuster.github.io",
+
+    # Development URLs
     "http://localhost:3000",
-    "http://127.0.0.1:5000"
+    "http://localhost:5000",
+    "http://127.0.0.1:5000",
+    "http://localhost:8000"
 ]
 
 if os.getenv('FLASK_ENV') == 'development':
-    allowed_origins.append("http://localhost:5000")
+    allowed_origins.extend([
+        "http://localhost:5000",
+        "http://127.0.0.1:3000"
+    ])
 
 CORS(app, origins=allowed_origins)
 

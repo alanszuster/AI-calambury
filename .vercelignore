@@ -1,0 +1,83 @@
+# Dataset files - not needed for production
+dataset/quickdraw/
+dataset/processed/
+data/
+
+# Python packages installed by pip (GitHub Actions installs these globally)
+site-packages/
+lib/
+lib64/
+include/
+bin/
+share/
+pyvenv.cfg
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+
+# Training artifacts
+*.npy
+*.h5
+*.pkl
+*.pickle
+*.csv
+*.parquet
+*.feather
+*.hdf5
+*.mat
+
+# Model checkpoints (keep only final models)
+model/checkpoints/
+model/training_logs/
+*.weights
+*.index
+*.meta
+
+# Outputs and logs
+outputs/*.png
+outputs/*.jpg
+outputs/*.pdf
+logs/*.log
+logs/*.txt
+
+# Large compressed files
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# Temporary files
+tmp/
+temp/
+.cache/
+
+# Development files
+.pytest_cache/
+.coverage
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+.env.local
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Jupyter notebooks
+.ipynb_checkpoints/
+
+# Documentation that's not needed in production
+docs/
+README.md
+*.md
+!model/README.md
+
+# Scripts (not needed in production)
+scripts/
