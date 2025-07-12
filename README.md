@@ -146,62 +146,7 @@ This production repository contains only the trained model and API. For model tr
 - Contact repository maintainer for access to training resources
 - Full development repository with training code available on request
 
-## 📁 Project Structure
-
-```text
-ai-calambury/
-├── app.py                    # 🚀 Main Flask API server
-├── config.py                 # ⚙️  Central configuration
-├── requirements.txt          # 📦 Python dependencies
-├── runtime.txt              # 🐍 Python version for deployment
-├── vercel.json              # 🚀 Vercel deployment config
-├── Procfile                 # 🚀 Heroku deployment config
-├── README.md                # 📖 Main documentation
-├── model/                   # 🧠 AI model files (production-ready)
-│   ├── drawing_classifier.py  # 🤖 Classifier implementation
-│   ├── best_model.keras       # 💾 Pre-trained model weights
-│   └── classes.json           # 🏷️  Class labels mapping
-├── tests/                   # 🧪 Unit tests
-│   ├── test_app.py          # 🧪 API endpoint tests
-│   └── test_model.py        # 🧪 Model functionality tests
-└── docs/                    # � Documentation
-    ├── API.md              # � API documentation
-    ├── TRAINING.md         # 🎯 Training guide
-    ├── DEPLOYMENT.md       # 🚀 Deployment instructions
-    └── README.md           # 📖 Docs overview
-```
-
 **Note**: Training scripts (`scripts/`), datasets (`dataset/`), and training outputs (`outputs/`) are not included in this production repository to keep it lightweight for deployment.
-
-## 🚀 Deployment
-
-### Vercel (Recommended)
-
-This repository is optimized for Vercel deployment:
-
-```bash
-# Install Vercel CLI
-npm i -g vercel
-
-# Deploy
-vercel
-```
-
-### Docker
-
-```bash
-# This repository doesn't include Docker files
-# Contact maintainer for Docker setup instructions
-```
-
-### Heroku
-
-```bash
-# Deploy to Heroku
-git push heroku main
-```
-
-For detailed deployment instructions, contact the repository maintainer.
 
 ## 🧮 Technical Details
 
@@ -220,26 +165,9 @@ For detailed deployment instructions, contact the repository maintainer.
 - **Inference Time**: <100ms per prediction
 - **Model Size**: ~2MB (optimized for serverless deployment)
 
-## 🔮 Future Improvements
-
-- [ ] Support for more drawing classes
-- [ ] TensorFlow Lite optimization for faster inference
-- [ ] Batch prediction support
-- [ ] Real-time streaming prediction
-- [ ] Model versioning and A/B testing
-- [ ] Enhanced preprocessing pipeline
-
 ## 📄 License
 
 MIT License - see LICENSE file for details.
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit changes (`git commit -m 'Add amazing feature'`)
-4. Push to branch (`git push origin feature/amazing-feature`)
-5. Open Pull Request
 
 ## 📧 Contact
 
