@@ -23,8 +23,8 @@ pencil, pizza, rainbow, shoe, snake, star, sword, train, truck, whale
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Python 3.8+
-- TensorFlow 2.x
+- Python 3.12+
+- TensorFlow CPU 2.x
 - Flask
 
 ### Installation
@@ -43,25 +43,7 @@ python app.py
 
 The API will be available at `http://localhost:5000`
 
-## 🚀 Quick Start
-
-### Option 1: Use Pre-trained Model
-```bash
-# Just start the API (uses existing model)
-python app.py
-```
-
-### Option 2: Train Your Own Model
-```bash
-# 1. Prepare dataset (~10-20 minutes, ~2GB download)
-python scripts/prepare_data.py
-
-# 2. Train model (~30-60 minutes)
-python scripts/train_model.py
-
-# 3. Start API
-python app.py
-```
+**Note**: This repository contains only the production-ready API with a pre-trained model. Training scripts and datasets are available separately for development purposes.
 
 ## 📡 API Endpoints
 
@@ -156,15 +138,13 @@ print(f"Prediction: {result['predictions'][0]['class']}")
 print(f"Confidence: {result['predictions'][0]['confidence']:.2%}")
 ```
 
-## 🧪 Model Training & Improvement
+## 🧪 Model Training & Development
 
-See [`docs/TRAINING.md`](docs/TRAINING.md) for detailed instructions on:
+This production repository contains only the trained model and API. For model training and development:
 
-- Data preparation and augmentation
-- Model architecture customization
-- Training hyperparameter tuning
-- Performance evaluation and optimization
-- Adding new drawing classes
+- Training scripts and datasets are maintained separately for development
+- See [`docs/TRAINING.md`](docs/TRAINING.md) for training instructions
+- Contact repository maintainer for access to training resources
 
 ## 📁 Project Structure
 
@@ -174,41 +154,41 @@ ai-calambury/
 ├── config.py                 # ⚙️  Central configuration
 ├── requirements.txt          # 📦 Python dependencies
 ├── runtime.txt              # 🐍 Python version for deployment
+├── vercel.json              # 🚀 Vercel deployment config
 ├── Procfile                 # 🚀 Heroku deployment config
 ├── README.md                # 📖 Main documentation
-├── docs/                    # 📚 Documentation
-│   ├── API.md              # 🔌 API documentation
-│   ├── TRAINING.md         # 🎯 Training guide
-│   ├── DEPLOYMENT.md       # 🚀 Deployment instructions
-│   └── README.md           # 📖 Docs overview
-├── scripts/                 # 🛠️  Data & training scripts
-│   ├── prepare_data.py     # 📥 Data download & preprocessing
-│   ├── train_model.py      # 🎯 Model training
-│   └── README.md           # 📖 Scripts documentation
-├── docker/                  # 🐳 Docker configuration
-│   ├── Dockerfile          # 🐳 Container definition
-│   ├── .dockerignore       # 🚫 Docker ignore rules
-│   └── README.md           # 📖 Docker documentation
-├── dataset/                 # 📊 All data files
-│   ├── quickdraw/          # 📁 Raw Quick Draw! data
-│   ├── processed/          # ⚡ Preprocessed training data
-│   └── README.md           # 📖 Dataset documentation
-├── model/                   # 🧠 AI model files
+├── model/                   # 🧠 AI model files (production-ready)
 │   ├── drawing_classifier.py  # 🤖 Classifier implementation
-│   ├── drawing_model.h5       # 💾 Trained model weights
+│   ├── best_model.keras       # 💾 Pre-trained model weights
 │   └── classes.json           # 🏷️  Class labels mapping
-├── outputs/                 # 📈 Generated outputs
-│   ├── training_history.png   # 📊 Training plots
-│   └── README.md              # 📖 Outputs documentation
-├── logs/                    # 📝 Training & error logs
-│   └── README.md            # 📖 Logs documentation
-└── experiments/             # 🔬 Research experiments
-    └── README.md            # 📖 Experiments documentation
+├── tests/                   # 🧪 Unit tests
+│   ├── test_app.py          # 🧪 API endpoint tests
+│   └── test_model.py        # 🧪 Model functionality tests
+└── docs/                    # � Documentation
+    ├── API.md              # � API documentation
+    ├── TRAINING.md         # 🎯 Training guide
+    ├── DEPLOYMENT.md       # 🚀 Deployment instructions
+    └── README.md           # 📖 Docs overview
 ```
+
+**Note**: Training scripts (`scripts/`), datasets (`dataset/`), and training outputs (`outputs/`) are not included in this production repository to keep it lightweight for deployment.
 
 ## 🚀 Deployment
 
+### Vercel (Recommended)
+
+This repository is optimized for Vercel deployment:
+
+```bash
+# Install Vercel CLI
+npm i -g vercel
+
+# Deploy
+vercel
+```
+
 ### Docker
+
 ```bash
 # Build image
 docker build -f docker/Dockerfile -t ai-drawing-classifier .
@@ -218,6 +198,7 @@ docker run -p 5000:5000 ai-drawing-classifier
 ```
 
 ### Heroku
+
 ```bash
 # Deploy to Heroku
 git push heroku main
@@ -230,25 +211,26 @@ See [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) for detailed deployment instructi
 - **Architecture**: Convolutional Neural Network (CNN)
 - **Input**: 28x28 grayscale images
 - **Dataset**: Google Quick Draw! (simplified drawings)
-- **Framework**: TensorFlow/Keras
+- **Framework**: TensorFlow CPU/Keras
 - **Preprocessing**: PIL/Pillow image processing
-- **API**: Flask with CORS support
+- **API**: Flask with CORS support and rate limiting
+- **Deployment**: Optimized for Vercel serverless functions
 
 ## 📊 Performance
 
 - **Training Accuracy**: ~85-90%
 - **Validation Accuracy**: ~80-85%
 - **Inference Time**: <100ms per prediction
-- **Model Size**: ~2MB
+- **Model Size**: ~2MB (optimized for serverless deployment)
 
 ## 🔮 Future Improvements
 
 - [ ] Support for more drawing classes
-- [ ] Data augmentation techniques
-- [ ] Model architecture optimization
+- [ ] TensorFlow Lite optimization for faster inference
 - [ ] Batch prediction support
 - [ ] Real-time streaming prediction
 - [ ] Model versioning and A/B testing
+- [ ] Enhanced preprocessing pipeline
 
 ## 📄 License
 
