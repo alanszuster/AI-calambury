@@ -1,0 +1,47 @@
+# Dependencies and cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+.pytest_cache/
+
+# Development files
+.git/
+.github/
+.gitignore
+.DS_Store
+*.log
+.env
+
+# Dataset files (keep only processed data)
+dataset/quickdraw/
+dataset/sample_drawings.png
+dataset/README.md
+
+# Training outputs (keep only final model)
+outputs/
+scripts/
+
+# Documentation
+docs/
+README.md
+
+# Docker files
+docker/
+Dockerfile
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+Thumbs.db
+.DS_Store
