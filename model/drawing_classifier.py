@@ -67,13 +67,28 @@ class DrawingClassifier:
         return img_array
 
     def load_model(self):
-        model_path = 'model/drawing_model.keras'  # Using native Keras format
+        # Try different model files in order of preference
+        model_paths = [
+            os.getenv('MODEL_PATH', 'model/best_model.keras'),  # From env var or best model
+            'model/drawing_model.keras',  # Fallback to drawing model
+            'model/best_model.keras'      # Final fallback
+        ]
 
-        if os.path.exists(model_path):
-            print("Loading existing model...")
-            self.model = tf.keras.models.load_model(model_path)
-        else:
-            print("Creating new model...")
+        model_loaded = False
+        for model_path in model_paths:
+            if os.path.exists(model_path):
+                try:
+                    print(f"Loading model from {model_path}...")
+                    self.model = tf.keras.models.load_model(model_path)
+                    print(f"Model loaded successfully from {model_path}")
+                    model_loaded = True
+                    break
+                except Exception as e:
+                    print(f"Failed to load model from {model_path}: {e}")
+                    continue
+
+        if not model_loaded:
+            print("No pre-trained model found. Creating new model...")
             self.model = self.create_simple_model()
             print("Model created with random weights. Requires training for accuracy.")
 
