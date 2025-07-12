@@ -2,21 +2,28 @@ import tensorflow as tf
 import numpy as np
 from PIL import Image
 import os
+import json
 
 class DrawingClassifier:
     def __init__(self):
-
         self.model = None
-        self.classes = [
-            'apple', 'bicycle', 'bird', 'book', 'car', 'cat', 'chair', 'circle',
-            'cloud', 'computer', 'dog', 'flower', 'guitar', 'house', 'moon',
-            'phone', 'plane', 'sun', 'table', 'tree', 'umbrella'
-        ]
-        self.english_classes = [
-            'apple', 'bicycle', 'bird', 'book', 'car', 'cat', 'chair', 'circle',
-            'cloud', 'computer', 'dog', 'flower', 'guitar', 'house', 'moon',
-            'phone', 'airplane', 'sun', 'table', 'tree', 'umbrella'
-        ]
+        self.classes = []
+        self.load_classes()
+
+    def load_classes(self):
+        classes_path = 'model/classes.json'
+
+        if not os.path.exists(classes_path):
+            raise FileNotFoundError(f"Required file {classes_path} not found. Please ensure classes.json exists in the model directory.")
+
+        try:
+            with open(classes_path, 'r', encoding='utf-8') as f:
+                classes_dict = json.load(f)
+            # Convert dict to list, ensuring proper order
+            self.classes = [classes_dict[str(i)] for i in range(len(classes_dict))]
+            print(f"Loaded {len(self.classes)} classes from {classes_path}")
+        except Exception as e:
+            raise RuntimeError(f"Error loading classes from {classes_path}: {e}")
 
     def create_simple_model(self):
         model = tf.keras.Sequential([
@@ -60,7 +67,7 @@ class DrawingClassifier:
         return img_array
 
     def load_model(self):
-        model_path = 'model/drawing_model.h5'
+        model_path = 'model/drawing_model.keras'  # Using native Keras format
 
         if os.path.exists(model_path):
             print("Loading existing model...")
@@ -82,7 +89,7 @@ class DrawingClassifier:
             results = []
             for i, idx in enumerate(top_indices):
                 confidence = float(predictions[0][idx])
-                class_name = self.english_classes[idx] if idx < len(self.english_classes) else self.classes[idx]
+                class_name = self.classes[idx] if idx < len(self.classes) else f"class_{idx}"
                 results.append({
                     'class': class_name,
                     'confidence': round(confidence * 100, 1)
@@ -94,7 +101,9 @@ class DrawingClassifier:
             print(f"Error during prediction: {e}")
             return [{'class': 'error', 'confidence': 0.0}]
 
-    def save_model(self, path='model/drawing_model.h5'):
+    def save_model(self, path='model/drawing_model.keras'):  # Using native Keras format
         if self.model is not None:
             self.model.save(path)
             print(f"Model saved to {path}")
+        else:
+            print("No model to save. Train the model first.")

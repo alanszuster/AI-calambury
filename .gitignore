@@ -35,21 +35,55 @@ venv.bak/
 *.swo
 *~
 
-# Data files
+# Data files (exclude large datasets, keep small samples)
+dataset/quickdraw/
+dataset/processed/
+!dataset/README.md
+!dataset/sample_drawings.png
 data/
+
+# Explicitly exclude training data files
+dataset/processed/*.npy
+dataset/processed/*.h5
+dataset/processed/*.csv
+X_train.*
+X_test.*
+X_val.*
+y_train.*
+y_test.*
+y_val.*
+
+# General data formats
 *.npy
 *.csv
 *.h5
 *.pkl
 *.pickle
+*.parquet
+*.feather
+*.hdf5
+*.mat
 
-# Model files (uncomment if you want to exclude trained models)
-# model/*.h5
-# model/*.json
+# Model files (keep essential models, exclude training artifacts)
+model/*.h5
+model/*.keras
+!model/drawing_classifier.py
+!model/classes.json
+model/checkpoints/
+model/training_logs/
+*.weights
+*.index
+*.meta
 
 # Logs
 *.log
-logs/
+logs/*.log
+logs/*.txt
+!logs/README.md
+outputs/*.png
+outputs/*.jpg
+outputs/*.pdf
+!outputs/README.md
 
 # OS
 .DS_Store
@@ -76,12 +110,68 @@ temp/
 # Environment variables
 .env
 .env.local
+.env.production
+.env.development
+.env.test
+.envrc
+
+# API Keys and Secrets
+secrets/
+*.key
+*.pem
+*.crt
+*.cert
+credentials.json
+auth.json
+service-account.json
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Configuration with sensitive data
+config.local.py
+local_settings.py
+production_config.py
 
 # Deployment
 .vercel
 .netlify
+.heroku/
+.elasticbeanstalk/
+
+# Docker secrets
+docker-compose.override.yml
+.dockerignore.local
+
+# Backup files
+*.backup
+*.bak
+*.orig
+
+# User-specific files
+.personal/
+personal_notes.md
+todo.txt
 
 # Large datasets
 *.zip
 *.tar.gz
 *.rar
+*.7z
+
+# Cache directories
+.cache/
+.npm/
+.yarn/
+node_modules/
+
+# Monitoring and analytics
+.coverage
+coverage/
+.nyc_output/
+
+# Security scanning results
+.snyk
+security-report.json

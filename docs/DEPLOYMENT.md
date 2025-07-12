@@ -1,58 +1,58 @@
-# Instrukcje deployment dla AI Kalambury
+# Deployment Instructions for AI Drawing Classifier
 
-## Wersja lokalna (development)
+## Local Development Setup
 
-### 1. Przygotowanie środowiska
+### 1. Environment Setup
 ```bash
-# Klonowanie repozytorium
+# Clone repository
 git clone <your-repo-url>
 cd ai-calambury
 
-# Tworzenie wirtualnego środowiska (opcjonalne ale zalecane)
+# Create virtual environment (optional but recommended)
 python -m venv venv
 source venv/bin/activate  # Linux/Mac
-# lub
+# or
 venv\Scripts\activate     # Windows
 
-# Instalacja zależności
+# Install dependencies
 pip install -r requirements.txt
 ```
 
-### 2. Szybki start (z modelem demonstracyjnym)
+### 2. Quick Start (with demo model)
 ```bash
-python setup.py  # Tworzy podstawowy model
-python app.py    # Uruchamia aplikację
+python setup.py  # Creates basic model
+python app.py    # Starts application
 ```
 
-### 3. Pełny setup (z trenowaniem modelu)
+### 3. Full Setup (with model training)
 ```bash
-python prepare_data.py  # Pobiera dane Quick Draw! (~1GB)
-python train_model.py   # Trenuje model (~30 minut)
-python app.py          # Uruchamia aplikację
+python prepare_data.py  # Downloads Quick Draw! data (~1GB)
+python train_model.py   # Trains model (~30 minutes)
+python app.py          # Starts application
 ```
 
-## Deployment na Heroku
+## Heroku Deployment
 
-### 1. Przygotowanie plików
-Stwórz `Procfile`:
+### 1. Prepare Files
+Create `Procfile`:
 ```
 web: python app.py
 ```
 
-Stwórz `runtime.txt`:
+Create `runtime.txt`:
 ```
 python-3.9.18
 ```
 
-### 2. Konfiguracja Heroku
+### 2. Heroku Configuration
 ```bash
-# Zaloguj się do Heroku
+# Login to Heroku
 heroku login
 
-# Stwórz aplikację
-heroku create ai-kalambury-demo
+# Create application
+heroku create ai-drawing-classifier-demo
 
-# Ustaw zmienne środowiskowe
+# Set environment variables
 heroku config:set FLASK_ENV=production
 
 # Deploy
@@ -61,15 +61,15 @@ git commit -m "Initial deployment"
 git push heroku main
 ```
 
-### 3. Uwagi dla Heroku
-- Heroku ma limit pamięci, więc użyj mniejszego modelu
-- Dodaj `.slugignore` aby nie uploadować dużych plików danych
-- Użyj CPU-optimized TensorFlow
+### 3. Heroku Notes
+- Heroku has memory limits, so use a smaller model
+- Add `.slugignore` to avoid uploading large data files
+- Use CPU-optimized TensorFlow
 
-## Deployment na Vercel
+## Vercel Deployment
 
-### 1. Struktura dla Vercel
-Stwórz `vercel.json`:
+### 1. Vercel Structure
+Create `vercel.json`:
 ```json
 {
   "version": 2,
@@ -90,14 +90,14 @@ Stwórz `vercel.json`:
 
 ### 2. Deploy
 ```bash
-# Zainstaluj Vercel CLI
+# Install Vercel CLI
 npm i -g vercel
 
 # Deploy
 vercel
 ```
 
-## Deployment na DigitalOcean App Platform
+## DigitalOcean App Platform Deployment
 
 ### 1. Konfiguracja
 Stwórz `.do/app.yaml`:
@@ -118,11 +118,11 @@ services:
   - path: /
 ```
 
-## Deployment na AWS EC2
+## AWS EC2 Deployment
 
 ### 1. Setup serwera
 ```bash
-# Na serwerze EC2
+# On EC2 server
 sudo apt update
 sudo apt install python3 python3-pip nginx
 
@@ -152,7 +152,7 @@ server {
 }
 ```
 
-## Optymalizacja dla produkcji
+## Production Optimization
 
 ### 1. Zmniejszenie rozmiaru modelu
 ```python
@@ -168,7 +168,7 @@ from functools import lru_cache
 
 @lru_cache(maxsize=1000)
 def cached_predict(image_hash):
-    # Cache wyników dla identycznych obrazów
+    # Cache results for identical images
     pass
 ```
 
@@ -205,7 +205,7 @@ def health_check():
     return {'status': 'healthy', 'model_loaded': classifier is not None}
 ```
 
-## Bezpieczeństwo
+## Security
 
 ### 1. Rate limiting
 ```python
@@ -227,7 +227,7 @@ def predict_drawing():
 ### 2. Input validation
 ```python
 def validate_image(image_data):
-    # Sprawdź rozmiar, format, etc.
+    # Check size, format, etc.
     if len(image_data) > MAX_IMAGE_SIZE:
         raise ValueError("Image too large")
     # ...
@@ -235,8 +235,8 @@ def validate_image(image_data):
 
 ## Troubleshooting
 
-### Częste problemy:
-1. **Out of memory** - Zmniejsz batch_size lub użyj mniejszego modelu
-2. **Slow predictions** - Użyj TensorFlow Lite lub model quantization
-3. **CORS errors** - Upewnij się że flask-cors jest poprawnie skonfigurowany
-4. **Model not loading** - Sprawdź ścieżki do plików modelu
+### Common issues:
+1. **Out of memory** - Reduce batch_size or use smaller model
+2. **Slow predictions** - Use TensorFlow Lite or model quantization
+3. **CORS errors** - Make sure flask-cors is properly configured
+4. **Model not loading** - Check model file paths
