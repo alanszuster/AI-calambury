@@ -35,25 +35,22 @@ venv.bak/
 *.swo
 *~
 
+# Testing
+tests/
+.pytest_cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+.tox/
+.nox/
+
 # Data files (exclude large datasets, keep small samples)
 dataset/quickdraw/
 dataset/processed/
 !dataset/README.md
 !dataset/sample_drawings.png
 data/
-
-# Explicitly exclude training data files
-dataset/processed/*.npy
-dataset/processed/*.h5
-dataset/processed/*.csv
-X_train.*
-X_test.*
-X_val.*
-y_train.*
-y_test.*
-y_val.*
-
-# General data formats
 *.npy
 *.csv
 *.h5
@@ -64,41 +61,33 @@ y_val.*
 *.hdf5
 *.mat
 
-# Model files (keep essential models, exclude training artifacts)
-model/*.h5
-# Allow essential model files for deployment
+# Training data files
+X_train.*
+X_test.*
+X_val.*
+y_train.*
+y_test.*
+y_val.*
+
+# Training scripts and outputs (not needed for production)
+scripts/train_model.py
+scripts/prepare_data.py
+outputs/
+experiments/
+
+# Model files (keep only essential for deployment)
+model/*
 !model/best_model.keras
-!model/drawing_model.keras
-model/training_*.keras
-model/checkpoint_*.keras
-!model/drawing_classifier.py
 !model/classes.json
-model/checkpoints/
-model/training_logs/
-*.weights
-*.index
-*.meta
+!model/drawing_classifier.py
 
-# Logs
+# Logs and temporary files
 *.log
-logs/*.log
-logs/*.txt
-!logs/README.md
-outputs/*.png
-outputs/*.jpg
-outputs/*.pdf
-!outputs/README.md
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Jupyter
-.ipynb_checkpoints/
-
-# Flask
-instance/
-.webassets-cache
+*.tmp
+*.joblib
+logs/
+tmp/
+temp/
 
 # Images (allow sample images for documentation)
 *.png
@@ -106,77 +95,46 @@ instance/
 *.jpeg
 *.gif
 !dataset/sample_drawings.png
-!static/favicon.ico
 
-# Temporary files
-tmp/
-temp/
+# OS files
+.DS_Store
+Thumbs.db
 
-# Environment variables
+# Environment files
 .env
 .env.local
 .env.production
+.env.staging
 .env.development
 .env.test
-.envrc
 
 # API Keys and Secrets
 secrets/
 *.key
 *.pem
 *.crt
-*.cert
 credentials.json
-auth.json
-service-account.json
 
-# Database files
-*.db
-*.sqlite
-*.sqlite3
+# Jupyter notebooks
+*.ipynb
+.ipynb_checkpoints/
 
-# Configuration with sensitive data
-config.local.py
-local_settings.py
-production_config.py
+# Documentation build files
+docs/_build/
+docs/build/
 
-# Deployment
-.vercel
-.netlify
-.heroku/
-.elasticbeanstalk/
-
-# Docker secrets
-docker-compose.override.yml
-.dockerignore.local
-
-# Backup files
-*.backup
-*.bak
-*.orig
-
-# User-specific files
-.personal/
-personal_notes.md
-todo.txt
-
-# Large datasets
+# Large archives
 *.zip
 *.tar.gz
 *.rar
 *.7z
 
-# Cache directories
-.cache/
-.npm/
-.yarn/
-node_modules/
+# Deployment
+.vercel
+.netlify
+.heroku/
 
-# Monitoring and analytics
-.coverage
-coverage/
-.nyc_output/
-
-# Security scanning results
-.snyk
-security-report.json
+# Database files
+*.db
+*.sqlite
+*.sqlite3

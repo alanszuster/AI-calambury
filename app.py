@@ -51,11 +51,14 @@ def require_api_key(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         api_key = request.headers.get('X-API-Key')
-        expected_key = os.getenv('API_KEY', 'your-secret-api-key-here')
+        expected_key = os.getenv('API_KEY')
 
         # Skip API key check for health endpoint and development
         if request.endpoint == 'health_check' or os.getenv('FLASK_ENV') == 'development':
             return f(*args, **kwargs)
+
+        if not expected_key:
+            return jsonify({'error': 'Server configuration error'}), 500
 
         if not api_key or api_key != expected_key:
             return jsonify({'error': 'Invalid or missing API key'}), 401
@@ -66,12 +69,20 @@ def require_api_key(f):
 def init_model():
     global classifier
     try:
+        print("Loading AI model...")
         classifier = DrawingClassifier()
         classifier.load_model()
         print("AI model loaded successfully!")
     except Exception as e:
         print(f"Error loading model: {e}")
         classifier = None
+
+def get_classifier():
+    """Lazy load classifier only when needed"""
+    global classifier
+    if classifier is None:
+        init_model()
+    return classifier
 
 @app.route('/')
 def index():
@@ -103,6 +114,7 @@ def predict_drawing():
         image_data = image_data.split(',')[1]
         image = Image.open(io.BytesIO(base64.b64decode(image_data)))
 
+        classifier = get_classifier()
         if classifier is None:
             return jsonify({
                 'error': 'Model not loaded',
@@ -126,6 +138,7 @@ def predict_drawing():
 @limiter.limit("30 per minute")
 def get_classes():
     """Get list of supported drawing classes"""
+    classifier = get_classifier()
     if classifier is None:
         return jsonify({'error': 'Model not loaded', 'classes': []}), 503
 
@@ -137,6 +150,7 @@ def get_classes():
 @app.route('/health')
 def health_check():
     """Check API health and model status"""
+    global classifier
     model_status = 'loaded' if classifier is not None else 'not_loaded'
     return jsonify({
         'status': 'healthy',
@@ -148,6 +162,7 @@ def health_check():
 @limiter.limit("60 per hour")
 def get_random_word():
     """Get a random word from supported classes for drawing challenges"""
+    classifier = get_classifier()
     if classifier is None:
         return jsonify({'error': 'Model not loaded', 'word': None}), 503
 
@@ -155,10 +170,11 @@ def get_random_word():
     word = random.choice(classifier.classes)
     return jsonify({'word': word})
 
-# Initialize model for production (Vercel)
-if os.getenv('VERCEL') or os.getenv('FLASK_ENV') == 'production':
-    print("Production environment detected - initializing model...")
-    init_model()
+# Don't initialize model on startup for Vercel - use lazy loading instead
+# Initialize model for production (Vercel) - commented out for faster cold starts
+# if os.getenv('VERCEL') or os.getenv('FLASK_ENV') == 'production':
+#     print("Production environment detected - initializing model...")
+#     init_model()
 
 if __name__ == '__main__':
     print("Starting AI Drawing Classifier API...")
