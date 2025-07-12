@@ -67,8 +67,12 @@ y_val.*
 # Model files (keep essential models, exclude training artifacts)
 model/*.h5
 # Allow essential model files for deployment
+!model/best_model.keras
+!model/drawing_model.keras
 model/training_*.keras
 model/checkpoint_*.keras
+!model/drawing_classifier.py
+!model/classes.json
 model/checkpoints/
 model/training_logs/
 *.weights
