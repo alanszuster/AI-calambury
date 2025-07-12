@@ -143,8 +143,8 @@ print(f"Confidence: {result['predictions'][0]['confidence']:.2%}")
 This production repository contains only the trained model and API. For model training and development:
 
 - Training scripts and datasets are maintained separately for development
-- See [`docs/TRAINING.md`](docs/TRAINING.md) for training instructions
 - Contact repository maintainer for access to training resources
+- Full development repository with training code available on request
 
 ## 📁 Project Structure
 
@@ -190,11 +190,8 @@ vercel
 ### Docker
 
 ```bash
-# Build image
-docker build -f docker/Dockerfile -t ai-drawing-classifier .
-
-# Run container
-docker run -p 5000:5000 ai-drawing-classifier
+# This repository doesn't include Docker files
+# Contact maintainer for Docker setup instructions
 ```
 
 ### Heroku
@@ -204,7 +201,7 @@ docker run -p 5000:5000 ai-drawing-classifier
 git push heroku main
 ```
 
-See [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) for detailed deployment instructions.
+For detailed deployment instructions, contact the repository maintainer.
 
 ## 🧮 Technical Details
 
