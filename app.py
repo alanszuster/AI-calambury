@@ -145,6 +145,11 @@ def get_random_word():
     word = random.choice(classifier.classes)
     return jsonify({'word': word})
 
+# Initialize model for production (Vercel)
+if os.getenv('VERCEL') or os.getenv('FLASK_ENV') == 'production':
+    print("Production environment detected - initializing model...")
+    init_model()
+
 if __name__ == '__main__':
     print("Starting AI Drawing Classifier API...")
     print("Initializing AI model...")
