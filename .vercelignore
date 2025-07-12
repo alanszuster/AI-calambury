@@ -19,22 +19,23 @@ pip-delete-this-directory.txt
 *.log
 .env
 
-# Dataset files (keep only processed data and model)
-dataset/quickdraw/
-dataset/sample_drawings.png
-dataset/README.md
+# Dataset files (exclude all datasets)
+dataset/
+
+# Training scripts (exclude all training code)
+scripts/
 
 # Training outputs (keep only final model)
 outputs/
-scripts/
-tests/
-scripts/*
 
-# Documentation
+# Testing (not needed in production)
+tests/
+
+# Documentation (not needed in production)
 docs/
 README.md
 
-# Docker files
+# Docker files (not needed for Vercel)
 docker/
 Dockerfile
 Procfile

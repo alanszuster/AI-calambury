@@ -45,11 +45,8 @@ htmlcov/
 .tox/
 .nox/
 
-# Data files (exclude large datasets, keep small samples)
-dataset/quickdraw/
-dataset/processed/
-!dataset/README.md
-!dataset/sample_drawings.png
+# Data files (exclude all datasets)
+dataset/
 data/
 *.npy
 *.csv
@@ -70,10 +67,15 @@ y_test.*
 y_val.*
 
 # Training scripts and outputs (not needed for production)
-scripts/train_model.py
-scripts/prepare_data.py
+scripts/
 outputs/
 experiments/
+
+# Docker files (not needed for production repo)
+docker/
+
+# Documentation (not needed for production repo)
+docs/
 
 # Model files (keep only essential for deployment)
 model/*
