@@ -20,7 +20,6 @@ allowed_origins = [
     "https://alanszuster.vercel.app",
     "https://alanszusterpage-alanszuster-alanszusters-projects.vercel.app",
     "https://alanszusterpage-alanszusters-projects.vercel.app",
-    "https://alanszuster.github.io",
 
     # Development URLs
     "http://localhost:3000",
@@ -38,45 +37,24 @@ if os.getenv('FLASK_ENV') == 'development':
 CORS(app, origins=allowed_origins)
 
 # Rate limiting
-limiter = Limiter(
-    app,
-    key_func=get_remote_address,
-    default_limits=["200 per day", "50 per hour"]
-)
+limiter = Limiter(get_remote_address, app=app)
+
+
 
 classifier = None
-
-# Simple API key authentication
-def require_api_key(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        api_key = request.headers.get('X-API-Key')
-        expected_key = os.getenv('API_KEY')
-
-        # Skip API key check for health endpoint and development
-        if request.endpoint == 'health_check' or os.getenv('FLASK_ENV') == 'development':
-            return f(*args, **kwargs)
-
-        if not expected_key:
-            return jsonify({'error': 'Server configuration error'}), 500
-
-        if not api_key or api_key != expected_key:
-            return jsonify({'error': 'Invalid or missing API key'}), 401
-
-        return f(*args, **kwargs)
-    return decorated_function
 
 def init_model():
     global classifier
     try:
-        print("Loading AI model...")
+        print("[DEBUG] Loading AI model...")
         classifier = DrawingClassifier()
         classifier.load_model()
-        print("AI model loaded successfully!")
+        print("[DEBUG] AI model loaded successfully!")
     except Exception as e:
-        print(f"Error loading model: {e}")
+        print(f"[ERROR] Error loading model: {e}")
         classifier = None
 
+init_model()
 def get_classifier():
     """Lazy load classifier only when needed"""
     global classifier
@@ -86,15 +64,20 @@ def get_classifier():
 
 @app.route('/')
 def index():
-    return jsonify({
-        'name': 'AI Drawing Classifier API',
-        'version': '1.0',
-        'endpoints': {
-            'POST /predict': 'Classify a drawing image',
-            'GET /classes': 'Get list of supported classes',
-            'GET /health': 'Check API health'
-        }
-    })
+    try:
+        print("[DEBUG] Index endpoint called")
+        return jsonify({
+            'name': 'AI Drawing Classifier API',
+            'version': '1.0',
+            'endpoints': {
+                'POST /predict': 'Classify a drawing image',
+                'GET /classes': 'Get list of supported classes',
+                'GET /health': 'Check API health'
+            }
+        })
+    except Exception as e:
+        print(f"[ERROR] Index endpoint error: {e}")
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/predict', methods=['POST'])
 @limiter.limit("10 per minute")
@@ -138,14 +121,19 @@ def predict_drawing():
 @limiter.limit("30 per minute")
 def get_classes():
     """Get list of supported drawing classes"""
-    classifier = get_classifier()
-    if classifier is None:
-        return jsonify({'error': 'Model not loaded', 'classes': []}), 503
-
-    return jsonify({
-        'classes': classifier.classes,
-        'total_classes': len(classifier.classes)
-    })
+    try:
+        print("[DEBUG] get_classes endpoint called")
+        classifier = get_classifier()
+        if classifier is None:
+            print("[ERROR] Model not loaded in get_classes")
+            return jsonify({'error': 'Model not loaded', 'classes': []}), 503
+        return jsonify({
+            'classes': classifier.classes,
+            'total_classes': len(classifier.classes)
+        })
+    except Exception as e:
+        print(f"[ERROR] get_classes endpoint error: {e}")
+        return jsonify({'error': str(e), 'classes': []}), 500
 
 @app.route('/health')
 def health_check():

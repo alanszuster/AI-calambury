@@ -1,0 +1,162 @@
+# This file specifies files that are *not* uploaded to Google Cloud
+# using gcloud. It follows the same syntax as .gitignore, with the addition of
+# "#!include" directives (which insert the entries of the given .gitignore-style
+# file at that point).
+#
+# For more information, run:
+#   $ gcloud topic gcloudignore
+#
+.gcloudignore
+# If you would like to upload your .git directory, .gitignore file or files
+# from your .gitignore file, remove the corresponding line
+# below:
+.git
+.gitignore
+
+# Python pycache:
+__pycache__/
+# Ignored by the build system
+/setup.cfg
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Testing
+tests/
+.pytest_cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+.tox/
+.nox/
+
+# Data files (exclude all datasets)
+dataset/
+data/
+*.npy
+*.csv
+*.h5
+*.pkl
+*.pickle
+*.parquet
+*.feather
+*.hdf5
+*.mat
+
+# Training data files
+X_train.*
+X_test.*
+X_val.*
+y_train.*
+y_test.*
+y_val.*
+
+# Training scripts and outputs (not needed for production)
+scripts/
+outputs/
+experiments/
+
+# Docker files (not needed for production repo)
+docker/
+
+# Documentation (not needed for production repo)
+docs/
+
+# Model files (keep only essential for deployment)
+model/*
+!model/best_model.keras
+!model/classes.json
+!model/drawing_classifier.py
+
+# Logs and temporary files
+*.log
+*.tmp
+*.joblib
+logs/
+tmp/
+temp/
+
+# Images (allow sample images for documentation)
+*.png
+*.jpg
+*.jpeg
+*.gif
+!dataset/sample_drawings.png
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+.env.local
+.env.production
+.env.staging
+.env.development
+.env.test
+
+# API Keys and Secrets
+secrets/
+*.key
+*.pem
+*.crt
+credentials.json
+
+# Jupyter notebooks
+*.ipynb
+.ipynb_checkpoints/
+
+# Documentation build files
+docs/_build/
+docs/build/
+
+# Large archives
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# Deployment
+.vercel
+.netlify
+.heroku/
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
