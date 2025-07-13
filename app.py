@@ -8,11 +8,23 @@ import base64
 from PIL import Image
 import io
 import tensorflow as tf
+
 import os
 from functools import wraps
 from model.drawing_classifier import DrawingClassifier
 
+
 app = Flask(__name__)
+AI_API_KEY = os.getenv('AI_API_KEY')
+
+def require_api_key(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        key = request.headers.get('x-api-key')
+        if not key or key != AI_API_KEY:
+            return jsonify({'error': 'Unauthorized'}), 401
+        return func(*args, **kwargs)
+    return wrapper
 
 # Configure CORS for specific domains
 allowed_origins = [
@@ -81,6 +93,7 @@ def index():
 
 @app.route('/predict', methods=['POST'])
 @limiter.limit("10 per minute")
+@require_api_key
 def predict_drawing():
     try:
         # Input validation
@@ -119,6 +132,7 @@ def predict_drawing():
 
 @app.route('/classes')
 @limiter.limit("30 per minute")
+@require_api_key
 def get_classes():
     """Get list of supported drawing classes"""
     try:
@@ -136,6 +150,7 @@ def get_classes():
         return jsonify({'error': str(e), 'classes': []}), 500
 
 @app.route('/health')
+@require_api_key
 def health_check():
     """Check API health and model status"""
     global classifier
@@ -148,6 +163,7 @@ def health_check():
 
 @app.route('/get_random_word')
 @limiter.limit("60 per hour")
+@require_api_key
 def get_random_word():
     """Get a random word from supported classes for drawing challenges"""
     classifier = get_classifier()

@@ -23,11 +23,14 @@ jobs:
         run: gcloud services enable run.googleapis.com
       - name: Build and push Docker image
         run: |
-          gcloud builds submit --tag gcr.io/${{ secrets.GCP_PROJECT_ID }}/ai-calambury --dockerfile=docker/Dockerfile .
+          gcloud builds submit --tag gcr.io/${{ secrets.GCP_PROJECT_ID }}/ai-calambury .
       - name: Deploy to Cloud Run
         run: |
           gcloud run deploy ai-calambury \
             --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/ai-calambury \
             --platform managed \
             --region europe-west1 \
-            --allow-unauthenticated
+            --memory 4Gi \
+            --cpu 2 \
+            --allow-unauthenticated \
+            --set-env-vars=AI_API_KEY=${{ secrets.AI_API_KEY }}

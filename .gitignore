@@ -140,3 +140,4 @@ docs/build/
 *.db
 *.sqlite
 *.sqlite3
+deploy_cloudrun.sh
